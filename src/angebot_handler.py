@@ -2,7 +2,7 @@ from aws_lambda_powertools.event_handler import APIGatewayHttpResolver
 import angebot_controller
 from angebot_controller import AngebotDTO
 from lambda_utils.response_utils import response, empty_response
-from lambda_utils.event_utils import extract_body, extract_id, extract_tenant
+from lambda_utils.event_utils import extract_body, extract_stichtag, extract_tenant
 from lambda_utils.exception import ValidationException
 import json
 app = APIGatewayHttpResolver()
@@ -21,21 +21,19 @@ def post():
     return response(201, angebot.to_json())
 
 
-@app.put('/api/angebot/{id}')
-def put():
+@app.put('/api/angebot/<id>')
+def put(id):
     event = app.current_event
     tenant_id = extract_tenant(event)
-    id = extract_id(event)
     body = extract_body(event)
     angebot = angebot_controller.update_angebot(tenant_id, id, body)
     return response(200, angebot.to_json())
 
 
-@app.get('/api/angebot/{id}')
-def get():
+@app.get('/api/angebot/<id>')
+def get(id):
     event = app.current_event
     tenant_id = extract_tenant(event)
-    id = extract_id(event)
     angebot = angebot_controller.get_angebot(tenant_id, id)
     if angebot:
         return response(200, angebot.to_json())
@@ -47,15 +45,15 @@ def get():
 def getAll():
     event = app.current_event
     tenant_id = extract_tenant(event)
-    angebote = angebot_controller.get_angebote(tenant_id)
+    stichtag = extract_stichtag(event)
+    angebote = angebot_controller.get_angebote(tenant_id, stichtag)
     return response(200, json.dumps(angebote, default=AngebotDTO.to_json))
 
 
-@app.delete('/api/angebot/{id}')
-def delete():
+@app.delete('/api/angebot/<id>')
+def delete(id):
     event = app.current_event
     tenant_id = extract_tenant(event)
-    id = extract_id(event)
     deleted = angebot_controller.delete_angebot(tenant_id, id)
     if deleted:
         return empty_response(204)

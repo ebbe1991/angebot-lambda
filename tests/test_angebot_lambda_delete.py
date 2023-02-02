@@ -1,6 +1,5 @@
 import json
 from src import angebot_controller
-
 from src import angebot_handler
 from tests.helper import event, lambda_response, DEFAULT_TENANT_ID
 

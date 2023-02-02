@@ -1,10 +1,10 @@
 import uuid
 import json
 from datetime import date
-from lambda_utils.exception import ValidationException
-from lambda_utils.validation import check_required_field
-from lambda_utils.ttl import compute_ttl_for_date
+from lambda_utils.validation import check_required_field, check_daterange
 from lambda_utils.env_utils import getenv_as_boolean
+from lambda_utils.date_utils import fromisoformat, compute_ttl_for_date
+
 
 def create(item: dict):
     bezeichnung = item.get('bezeichnung')
@@ -13,19 +13,16 @@ def create(item: dict):
     check_required_field(preisInEuro, 'preisInEuro')
     gueltigVon = item.get('gueltigVon')
     gueltigBis = item.get('gueltigBis')
+    gueltigVonDate = None if gueltigVon is None else fromisoformat(gueltigVon)
+    gueltigBisDate = None if gueltigBis is None else fromisoformat(gueltigBis)
+    check_daterange(gueltigVonDate, gueltigBisDate)
     return AngebotDTO(
         bezeichnung,
         float(preisInEuro),
-        None if gueltigVon is None else fromisoformat(gueltigVon),
-        None if gueltigBis is None else fromisoformat(gueltigBis),
+        gueltigVonDate,
+        gueltigBisDate,
         item.get('id')
     )
-
-def fromisoformat(d: str):
-    try:
-        return date.fromisoformat(d)
-    except ValueError as ex:
-        raise ValidationException(ex.args[0])
 
 
 class AngebotDTO:

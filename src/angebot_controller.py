@@ -1,5 +1,6 @@
 from angebot_dto import AngebotDTO, create
 from lambda_utils.exception import UnknownIdException
+from datetime import date
 import dynamo_db_service
 
 
@@ -29,12 +30,13 @@ def get_angebot(tenant_id: str, id: str) -> AngebotDTO:
         return None
 
 
-def get_angebote(tenant_id: str) -> list[AngebotDTO]:
+def get_angebote(tenant_id: str, stichtag: date = None) -> list[AngebotDTO]:
     angebote = []
     items = dynamo_db_service.get_angebote(tenant_id)
     for item in items:
         angebot = create(item)
-        angebote.append(angebot)
+        if stichtag is None or angebot.gueltigBis is None or angebot.gueltigBis >= stichtag:
+            angebote.append(angebot)
     return angebote
 
 
