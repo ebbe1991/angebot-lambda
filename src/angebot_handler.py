@@ -1,10 +1,9 @@
 from aws_lambda_powertools.event_handler import APIGatewayHttpResolver
 import angebot_controller
 from angebot_controller import AngebotDTO
-from lambda_utils.response_utils import response, empty_response
+from lambda_utils.response_utils import response, empty_response, to_json_array
 from lambda_utils.event_utils import extract_body, extract_stichtag, extract_tenant
 from lambda_utils.exception import ValidationException
-import json
 app = APIGatewayHttpResolver()
 
 
@@ -47,7 +46,8 @@ def getAll():
     tenant_id = extract_tenant(event)
     stichtag = extract_stichtag(event)
     angebote = angebot_controller.get_angebote(tenant_id, stichtag)
-    return response(200, json.dumps(angebote, default=AngebotDTO.to_json))
+    body = to_json_array(list(map(AngebotDTO.to_json, angebote)))
+    return response(200, body)
 
 
 @app.delete('/api/angebot/<id>')

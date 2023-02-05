@@ -50,7 +50,7 @@ def test_get_angebote_by_stichtag_ok(lambda_context, dynamodb_table):
 
     assert extract_status_code(response) == 200
     assert len(body) == 1
-    assert body[0] == item2023.to_json()
+    assert json.dumps(body[0]) == item2023.to_json()
 
 
 def test_get_angebote_empty_ok(lambda_context, dynamodb_table):
