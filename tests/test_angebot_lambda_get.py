@@ -17,7 +17,8 @@ def test_get_angebot_not_found(lambda_context, dynamodb_table):
 def test_get_angebot_ok(lambda_context, dynamodb_table):
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -38,7 +39,8 @@ def test_get_angebot_without_tenant_id_not_ok(lambda_context, dynamodb_table):
     }
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }

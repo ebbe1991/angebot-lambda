@@ -7,13 +7,15 @@ from tests.helper import event, extract_body, extract_status_code, lambda_respon
 def test_get_angebote_ok(lambda_context, dynamodb_table):
     item1 = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
     item2 = {
         'bezeichnung': "Testangebot 2",
-        "preisInEuro": "9",
+        "preis": "9",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -31,13 +33,15 @@ def test_get_angebote_ok(lambda_context, dynamodb_table):
 def test_get_angebote_by_stichtag_ok(lambda_context, dynamodb_table):
     item1 = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
     item2 = {
         'bezeichnung': "Testangebot 2",
-        "preisInEuro": "9",
+        "preis": "9",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2023-01-01",
         "gueltigBis": "2023-02-01"
     }

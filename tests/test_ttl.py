@@ -8,7 +8,8 @@ from tests.helper import event, extract_id, DEFAULT_TENANT_ID
 def test_ttl_in_dynamobo_active(lambda_context, dynamodb_table):
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -24,7 +25,8 @@ def test_ttl_in_dynamobo_inactive(lambda_context, dynamodb_table):
     os.environ['TTL_FEATURE_ACTIVE'] = '0'
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }

@@ -9,8 +9,10 @@ from lambda_utils.date_utils import fromisoformat, compute_ttl_for_date
 def create(item: dict):
     bezeichnung = item.get('bezeichnung')
     check_required_field(bezeichnung, 'bezeichnung')
-    preisInEuro = item.get('preisInEuro')
-    check_required_field(preisInEuro, 'preisInEuro')
+    preis = item.get('preis')
+    check_required_field(preis, 'preis')
+    preisEinheit = item.get('preisEinheit')
+    check_required_field(preisEinheit, 'preisEinheit')
     gueltigVon = item.get('gueltigVon')
     gueltigBis = item.get('gueltigBis')
     gueltigVonDate = None if gueltigVon is None else fromisoformat(gueltigVon)
@@ -18,7 +20,8 @@ def create(item: dict):
     check_daterange(gueltigVonDate, gueltigBisDate)
     return AngebotDTO(
         bezeichnung,
-        float(preisInEuro),
+        float(preis),
+        preisEinheit,
         gueltigVonDate,
         gueltigBisDate,
         item.get('id')
@@ -27,13 +30,14 @@ def create(item: dict):
 
 class AngebotDTO:
 
-    def __init__(self, bezeichnung: str, preisInEuro: float, gueltigVon: date, gueltigBis: date, id: str = None):
+    def __init__(self, bezeichnung: str, preis: float, preisEinheit: str, gueltigVon: date, gueltigBis: date, id: str = None):
         if id:
             self.id = id
         else:
             self.id = str(uuid.uuid4())
         self.bezeichnung = bezeichnung
-        self.preisInEuro = preisInEuro
+        self.preis = preis
+        self.preisEinheit = preisEinheit
         self.gueltigVon = gueltigVon
         self.gueltigBis = gueltigBis
         self.ttl = compute_ttl_for_date(gueltigBis, 7) if getenv_as_boolean(

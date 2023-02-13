@@ -7,7 +7,8 @@ from tests.helper import event, lambda_response, DEFAULT_TENANT_ID
 def test_delete_angebot_ok(lambda_context, dynamodb_table):
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }

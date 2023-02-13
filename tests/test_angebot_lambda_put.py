@@ -9,7 +9,8 @@ from tests.helper import event, lambda_response, DEFAULT_TENANT_ID
 def test_update_angebot_ok(lambda_context, dynamodb_table):
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -22,7 +23,8 @@ def test_update_angebot_ok(lambda_context, dynamodb_table):
     }
     itemUpdate = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "9.9",
+        "preis": "9.99",
+        "preisEinheit": "€/kg",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -30,13 +32,14 @@ def test_update_angebot_ok(lambda_context, dynamodb_table):
         '/api/angebot/{id}', 'PUT', json.dumps(itemUpdate), pathParameters), lambda_context)
 
     assert response == lambda_response(200, AngebotDTO(
-        "Testangebot", 9.9, date.fromisoformat("2022-01-01"), date.fromisoformat("2022-02-01"), createdAngebot.id).to_json())
+        "Testangebot", 9.99, "€/kg", date.fromisoformat("2022-01-01"), date.fromisoformat("2022-02-01"), createdAngebot.id).to_json())
 
 
 def test_update_angebot_required_field_to_null_not_ok(lambda_context, dynamodb_table):
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -66,7 +69,8 @@ def test_update_angebot_with_unknown_id_not_ok(lambda_context, dynamodb_table):
     }
     itemUpdate = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -80,7 +84,8 @@ def test_update_angebot_with_unknown_id_not_ok(lambda_context, dynamodb_table):
 def test_update_angebot_set_null_value(lambda_context, dynamodb_table):
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -93,20 +98,22 @@ def test_update_angebot_set_null_value(lambda_context, dynamodb_table):
 
     itemUpdate = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01"
     }
     response = angebot_handler.handle(event(
         '/api/angebot/{id}', 'PUT', json.dumps(itemUpdate), pathParameters), lambda_context)
 
     assert response == lambda_response(200, AngebotDTO(
-        "Testangebot", 5.21, date.fromisoformat("2022-01-01"), None, createdAngebot.id).to_json())
+        "Testangebot", 5.21, "€/Stück", date.fromisoformat("2022-01-01"), None, createdAngebot.id).to_json())
 
 
 def test_update_angebot_without_body_not_ok(lambda_context, dynamodb_table):
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -130,7 +137,8 @@ def test_update_angebot_without_tenant_id_not_ok(lambda_context, dynamodb_table)
     }
     item = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.21",
+        "preis": "5.21",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }
@@ -142,7 +150,8 @@ def test_update_angebot_without_tenant_id_not_ok(lambda_context, dynamodb_table)
     }
     itemUpdate = {
         'bezeichnung': "Testangebot",
-        "preisInEuro": "5.99",
+        "preis": "5.99",
+        "preisEinheit": "€/Stück",
         "gueltigVon": "2022-01-01",
         "gueltigBis": "2022-02-01"
     }

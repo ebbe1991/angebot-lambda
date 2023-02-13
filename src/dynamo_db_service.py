@@ -17,7 +17,8 @@ def put_angebot(tenant_id: str, angebot: AngebotDTO):
             'tenant-id': tenant_id,
             'id': angebot.id,
             'bezeichnung': angebot.bezeichnung,
-            'preisInEuro': str(angebot.preisInEuro),
+            'preis': str(angebot.preis),
+            'preisEinheit': angebot.preisEinheit,
             'gueltigVon': angebot.gueltigVon.isoformat() if angebot.gueltigVon is not None else None,
             'gueltigBis': angebot.gueltigBis.isoformat() if angebot.gueltigBis is not None else None,
             'ttl': angebot.ttl
