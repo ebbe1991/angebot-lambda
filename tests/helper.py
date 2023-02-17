@@ -7,7 +7,7 @@ def event(path: str, method='GET',
           body: str = None,
           pathParameters: dict = None,
           headers: dict = {'x-tenant-id': DEFAULT_TENANT_ID,
-                          'Content-Type': 'application/json'},
+                           'Content-Type': 'application/json'},
           queryParameters: dict = None
           ) -> dict:
     rawPath = path
