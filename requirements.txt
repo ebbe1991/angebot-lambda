@@ -1,5 +1,5 @@
-boto3==1.26.59
-moto==4.1.1
-pytest==7.2.1
-aws_lambda_powertools==2.7.1
+boto3==1.39.14
+moto==5.1.8
+pytest==8.4.1
+aws_lambda_powertools==3.17.0
 lambda_utils @ git+https://github.com/ebbe1991/lambda-utils.git@main#egg=lambda_utils

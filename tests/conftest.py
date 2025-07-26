@@ -2,7 +2,7 @@ import os
 
 import boto3
 import pytest
-from moto import mock_dynamodb
+from moto import mock_aws
 
 os.environ['ANGEBOT_TABLE_NAME'] = 'ANGEBOT_TABLE'
 os.environ['AWS_DEFAULT_REGION'] = 'eu-central-1'
@@ -15,7 +15,7 @@ def lambda_context():
 
 @pytest.fixture(scope='session')
 def dynamodb():
-    with mock_dynamodb():
+    with mock_aws():
         yield boto3.resource('dynamodb')
 
 

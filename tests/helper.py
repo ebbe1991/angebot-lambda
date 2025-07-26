@@ -47,7 +47,7 @@ def event(path: str, method='GET',
 def lambda_response(status_code: int, body: str = None) -> dict:
     return {
         'statusCode': status_code,
-        'body': body,
+        'body': body if body else 'null',
         'isBase64Encoded': False,
         'cookies': [],
         'headers': {'Content-Type': 'application/json'}
